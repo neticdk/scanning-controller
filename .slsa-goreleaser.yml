@@ -7,5 +7,5 @@ env:
 goos: linux
 goarch: amd64
 
-main: ./cmd/root.go
-binary: root-{{ .Os }}-{{ .Arch }}
+main: ./cmd/controller/main.go
+binary: controller-{{ .Os }}-{{ .Arch }}
