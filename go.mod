@@ -10,7 +10,7 @@ require (
 	github.com/openclarity/kubeclarity/shared v0.0.0-20240111133845-5f6b41116110
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.8.0
-	gopkg.in/go-jose/go-jose.v2 v2.6.1
+	gopkg.in/go-jose/go-jose.v2 v2.6.3
 	k8s.io/apimachinery v0.29.1
 )
 
