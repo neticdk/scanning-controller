@@ -37,11 +37,12 @@ type ScanResult struct {
 }
 
 type WorkloadRef struct {
-	FQDN      string `json:"cluster"`
-	NRN       string `json:"nrn"`
-	Kind      string `json:"kind"`
-	Namespace string `json:"namespace"`
-	Name      string `json:"name"`
+	FQDN       string `json:"cluster"`
+	NRN        string `json:"nrn"`
+	ApiVersion string `json:"apiVersion"`
+	Kind       string `json:"kind"`
+	Namespace  string `json:"namespace"`
+	Name       string `json:"name"`
 }
 
 type Service interface {
@@ -229,8 +230,9 @@ func (c *client) PushScan(ctx context.Context, repo string, res *ScanResult) err
 
 func RefFromKind(obj kc.Object) WorkloadRef {
 	return WorkloadRef{
-		Kind:      obj.GetObjectKind().GroupVersionKind().Kind,
-		Namespace: obj.GetNamespace(),
-		Name:      obj.GetName(),
+		Kind:       obj.GetObjectKind().GroupVersionKind().Kind,
+		ApiVersion: obj.GetObjectKind().GroupVersionKind().GroupVersion().Identifier(),
+		Namespace:  obj.GetNamespace(),
+		Name:       obj.GetName(),
 	}
 }
