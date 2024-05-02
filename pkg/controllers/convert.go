@@ -11,20 +11,18 @@ import (
 	ty "github.com/aquasecurity/trivy/pkg/types"
 	"github.com/openclarity/kubeclarity/shared/pkg/scanner"
 	utilsVul "github.com/openclarity/kubeclarity/shared/pkg/utils/vulnerability"
-	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
 // convertTrivyReport based on https://github.com/openclarity/kubeclarity/blob/main/shared/pkg/scanner/trivy/scanner.go#L285
 func convertTrivyReport(ctx context.Context, report *ty.Report) ([]*scanner.MergedVulnerability, error) {
-	log := log.FromContext(ctx)
-
 	matches := []*scanner.MergedVulnerability{}
 	for _, result := range report.Results {
 		for _, vul := range result.Vulnerabilities {
-			typ, err := getTypeFromPurl(vul.PkgRef)
-			if err != nil {
-				log.V(1).Info("unable to convert pkgref", "pkgref", vul.PkgRef, "error", err)
-				typ = ""
+			typ := ""
+			purl := ""
+			if vul.PkgIdentifier.PURL != nil {
+				typ = vul.PkgIdentifier.PURL.Type
+				purl = vul.PkgIdentifier.PURL.String()
 			}
 
 			cvsses := getCVSSesFromVul(vul.CVSS)
@@ -55,7 +53,7 @@ func convertTrivyReport(ctx context.Context, report *ty.Report) ([]*scanner.Merg
 				Package: scanner.Package{
 					Name:     vul.PkgName,
 					Version:  vul.InstalledVersion,
-					PURL:     vul.PkgRef,
+					PURL:     purl,
 					Type:     typ,
 					Language: "",
 					Licenses: nil,

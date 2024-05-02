@@ -175,7 +175,7 @@ func (r *WorkloadController) reconcileWorkload(workloadKind kube.Kind) reconcile
 			return ctrl.Result{}, nil
 		}
 
-		exists, job, err := r.hasActiveScanJob(ctx, workloadRef, hash)
+		exists, job, err := r.hasActiveScanJob(ctx, workloadObj, hash)
 		if err != nil {
 			return ctrl.Result{}, fmt.Errorf("checking scan job: %w", err)
 		}
@@ -222,8 +222,8 @@ func (r *WorkloadController) ProcessScanJob() {
 	}
 }
 
-func (r *WorkloadController) hasActiveScanJob(ctx context.Context, owner kube.ObjectRef, hash string) (bool, *batchv1.Job, error) {
-	jobName := fmt.Sprintf("scan-vulnerabilityreport-%s", kube.ComputeHash(owner))
+func (r *WorkloadController) hasActiveScanJob(ctx context.Context, owner client.Object, hash string) (bool, *batchv1.Job, error) {
+	jobName := vulnerabilityreport.GetScanJobName(owner)
 	job := &batchv1.Job{}
 	err := r.Get(ctx, client.ObjectKey{Namespace: r.Config.Namespace, Name: jobName}, job)
 	if err != nil {
