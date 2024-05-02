@@ -13,7 +13,7 @@ import (
 	"github.com/aquasecurity/trivy-operator/pkg/utils"
 	"github.com/aquasecurity/trivy/pkg/sbom/cyclonedx"
 	ty "github.com/aquasecurity/trivy/pkg/types"
-	"github.com/docker/distribution/reference"
+	"github.com/distribution/reference"
 	"github.com/neticdk/scanning-controller/pkg/dependencies"
 	"go.uber.org/multierr"
 	batchv1 "k8s.io/api/batch/v1"
@@ -100,7 +100,7 @@ func (r *ScanJobController) processCompleteScanJob(ctx context.Context, job *bat
 
 	var merr error
 	for containerName, containerImage := range containerImages {
-		res, err := r.processScanJobResults(ctx, job, containerName, containerImage, owner)
+		res, err := r.processScanJobResults(ctx, job, containerName)
 		if err != nil {
 			merr = multierr.Append(merr, err)
 		} else {
@@ -124,7 +124,7 @@ func (r *ScanJobController) processCompleteScanJob(ctx context.Context, job *bat
 	return r.deleteJob(ctx, job)
 }
 
-func (r *ScanJobController) processScanJobResults(ctx context.Context, job *batchv1.Job, containerName, containerImage string, owner client.Object) (*dependencies.ScanResult, error) {
+func (r *ScanJobController) processScanJobResults(ctx context.Context, job *batchv1.Job, containerName string) (*dependencies.ScanResult, error) {
 	log := log.FromContext(ctx)
 
 	logsStream, err := r.LogsReader.GetLogsByJobAndContainerName(ctx, job, containerName)
@@ -164,8 +164,9 @@ func (r *ScanJobController) processLogStream(ctx context.Context, stream io.Read
 		return nil, err
 	}
 
-	vuln, _ := convertTrivyReport(ctx, &reports)
-	bom, _ := cyclonedx.NewMarshaler("").Marshal(reports)
+	vuln, _ := convertTrivyReport(&reports)
+	marshaller := &cyclonedx.Marshaler{}
+	bom, _ := marshaller.MarshalReport(ctx, reports)
 
 	sha := GetHashFromRepoDigest(reports.Metadata.RepoDigests, reports.ArtifactName)
 

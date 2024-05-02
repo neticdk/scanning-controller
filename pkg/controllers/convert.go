@@ -1,9 +1,6 @@
 package controllers
 
 import (
-	"context"
-	"fmt"
-	"net/url"
 	"sort"
 	"strings"
 
@@ -11,20 +8,18 @@ import (
 	ty "github.com/aquasecurity/trivy/pkg/types"
 	"github.com/openclarity/kubeclarity/shared/pkg/scanner"
 	utilsVul "github.com/openclarity/kubeclarity/shared/pkg/utils/vulnerability"
-	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
 // convertTrivyReport based on https://github.com/openclarity/kubeclarity/blob/main/shared/pkg/scanner/trivy/scanner.go#L285
-func convertTrivyReport(ctx context.Context, report *ty.Report) ([]*scanner.MergedVulnerability, error) {
-	log := log.FromContext(ctx)
-
+func convertTrivyReport(report *ty.Report) ([]*scanner.MergedVulnerability, error) {
 	matches := []*scanner.MergedVulnerability{}
 	for _, result := range report.Results {
 		for _, vul := range result.Vulnerabilities {
-			typ, err := getTypeFromPurl(vul.PkgRef)
-			if err != nil {
-				log.V(1).Info("unable to convert pkgref", "pkgref", vul.PkgRef, "error", err)
-				typ = ""
+			typ := ""
+			purl := ""
+			if vul.PkgIdentifier.PURL != nil {
+				typ = vul.PkgIdentifier.PURL.Type
+				purl = vul.PkgIdentifier.PURL.String()
 			}
 
 			cvsses := getCVSSesFromVul(vul.CVSS)
@@ -55,7 +50,7 @@ func convertTrivyReport(ctx context.Context, report *ty.Report) ([]*scanner.Merg
 				Package: scanner.Package{
 					Name:     vul.PkgName,
 					Version:  vul.InstalledVersion,
-					PURL:     vul.PkgRef,
+					PURL:     purl,
 					Type:     typ,
 					Language: "",
 					Licenses: nil,
@@ -71,18 +66,6 @@ func convertTrivyReport(ctx context.Context, report *ty.Report) ([]*scanner.Merg
 		}
 	}
 	return matches, nil
-}
-
-func getTypeFromPurl(purl string) (string, error) {
-	u, err := url.Parse(purl)
-	if err != nil {
-		return "", fmt.Errorf("unable to parse purl: %w", err)
-	}
-	typ, _, found := strings.Cut(u.Opaque, "/")
-	if !found {
-		return "", fmt.Errorf("type not found in purl")
-	}
-	return typ, nil
 }
 
 func getCVSSesFromVul(vCvss trivyDBTypes.VendorCVSS) []scanner.CVSS {
