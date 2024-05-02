@@ -164,7 +164,7 @@ func (r *ScanJobController) processLogStream(ctx context.Context, stream io.Read
 		return nil, err
 	}
 
-	vuln, _ := convertTrivyReport(ctx, &reports)
+	vuln, _ := convertTrivyReport(&reports)
 	marshaller := &cyclonedx.Marshaler{}
 	bom, _ := marshaller.MarshalReport(ctx, reports)
 

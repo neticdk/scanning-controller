@@ -1,9 +1,6 @@
 package controllers
 
 import (
-	"context"
-	"fmt"
-	"net/url"
 	"sort"
 	"strings"
 
@@ -14,7 +11,7 @@ import (
 )
 
 // convertTrivyReport based on https://github.com/openclarity/kubeclarity/blob/main/shared/pkg/scanner/trivy/scanner.go#L285
-func convertTrivyReport(ctx context.Context, report *ty.Report) ([]*scanner.MergedVulnerability, error) {
+func convertTrivyReport(report *ty.Report) ([]*scanner.MergedVulnerability, error) {
 	matches := []*scanner.MergedVulnerability{}
 	for _, result := range report.Results {
 		for _, vul := range result.Vulnerabilities {
@@ -69,18 +66,6 @@ func convertTrivyReport(ctx context.Context, report *ty.Report) ([]*scanner.Merg
 		}
 	}
 	return matches, nil
-}
-
-func getTypeFromPurl(purl string) (string, error) {
-	u, err := url.Parse(purl)
-	if err != nil {
-		return "", fmt.Errorf("unable to parse purl: %w", err)
-	}
-	typ, _, found := strings.Cut(u.Opaque, "/")
-	if !found {
-		return "", fmt.Errorf("type not found in purl")
-	}
-	return typ, nil
 }
 
 func getCVSSesFromVul(vCvss trivyDBTypes.VendorCVSS) []scanner.CVSS {
