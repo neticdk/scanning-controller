@@ -155,18 +155,6 @@ func (r *WorkloadController) reconcileWorkload(workloadKind kube.Kind) reconcile
 				if !img.Central {
 					uptodate = uptodate && img.LastScan.After(time.Now().Add(-12*time.Hour))
 				}
-
-				if uptodate {
-					// Make sure reference to workload is recorded even if centrally scanned
-					parent, err := resolveOwnerChain(ctx, &r.ObjectResolver, workloadObj)
-					if err != nil {
-						return ctrl.Result{}, err
-					}
-					err = r.DepService.PushScan(ctx, ref, &dependencies.ScanResult{Workload: dependencies.RefFromKind(parent)})
-					if err != nil {
-						return ctrl.Result{}, err
-					}
-				}
 			}
 		}
 
