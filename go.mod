@@ -17,9 +17,9 @@ require (
 	github.com/spf13/cobra v1.9.1
 	go.uber.org/multierr v1.11.0
 	gopkg.in/go-jose/go-jose.v4 v4.1.0
-	k8s.io/api v0.33.0
+	k8s.io/api v0.33.1
 	k8s.io/apimachinery v0.33.1
-	k8s.io/client-go v0.33.0
+	k8s.io/client-go v0.33.1
 	sigs.k8s.io/controller-runtime v0.20.4
 )
 
