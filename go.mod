@@ -7,7 +7,7 @@ toolchain go1.24.3
 require (
 	github.com/CycloneDX/cyclonedx-go v0.9.2
 	github.com/aquasecurity/trivy v0.62.1
-	github.com/aquasecurity/trivy-db v0.0.0-20250512105550-319ae10c5abf
+	github.com/aquasecurity/trivy-db 8a8d6e3cc002
 	github.com/aquasecurity/trivy-operator v0.25.0
 	github.com/bluele/gcache v0.0.2
 	github.com/bombsimon/logrusr/v4 v4.1.0
@@ -204,7 +204,7 @@ require (
 	github.com/go-git/go-git/v5 v5.16.0 // indirect
 	github.com/go-gorp/gorp/v3 v3.1.0 // indirect
 	github.com/go-ini/ini v1.67.0 // indirect
-	github.com/go-logr/logr v1.4.2
+	github.com/go-logr/logr v1.4.3
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-openapi/jsonpointer v0.21.0 // indirect
 	github.com/go-openapi/jsonreference v0.21.0 // indirect
