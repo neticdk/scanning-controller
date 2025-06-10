@@ -6,9 +6,9 @@ toolchain go1.24.3
 
 require (
 	github.com/CycloneDX/cyclonedx-go v0.9.2
-	github.com/aquasecurity/trivy v0.62.1
+	github.com/aquasecurity/trivy v0.63.0
 	github.com/aquasecurity/trivy-db v0.0.0-20250512105550-319ae10c5abf
-	github.com/aquasecurity/trivy-operator v0.25.0
+	github.com/aquasecurity/trivy-operator v0.26.1
 	github.com/bluele/gcache v0.0.2
 	github.com/bombsimon/logrusr/v4 v4.1.0
 	github.com/bxcodec/httpcache v1.0.0
@@ -20,7 +20,7 @@ require (
 	k8s.io/api v0.33.1
 	k8s.io/apimachinery v0.33.1
 	k8s.io/client-go v0.33.1
-	sigs.k8s.io/controller-runtime v0.20.4
+	sigs.k8s.io/controller-runtime v0.21.0
 )
 
 require (
