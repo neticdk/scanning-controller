@@ -8,7 +8,7 @@ require (
 	github.com/CycloneDX/cyclonedx-go v0.9.2
 	github.com/aquasecurity/trivy v0.63.0
 	github.com/aquasecurity/trivy-db 8a8d6e3cc002
-	github.com/aquasecurity/trivy-operator v0.26.1
+	github.com/aquasecurity/trivy-operator v0.27.0
 	github.com/bluele/gcache v0.0.2
 	github.com/bombsimon/logrusr/v4 v4.1.0
 	github.com/bxcodec/httpcache v1.0.0
