@@ -150,7 +150,6 @@ func (r *WorkloadController) reconcileWorkload(workloadKind kube.Kind) reconcile
 
 			if img == nil {
 				uptodate = false
-
 			} else {
 				if !img.Central {
 					uptodate = uptodate && img.LastScan.After(time.Now().Add(-12*time.Hour))
@@ -241,7 +240,7 @@ func (r *WorkloadController) submitScanJob(ctx context.Context, owner client.Obj
 			return err
 		}
 		multiSecretSupport := trivy.MultiSecretSupport(trivy.Config{PluginConfig: pConfig})
-		credentials, err = r.CredentialsByServer(ctx, owner, privateRegistrySecrets, multiSecretSupport)
+		credentials, err = r.CredentialsByServer(ctx, owner, privateRegistrySecrets, multiSecretSupport, true)
 		if err != nil {
 			return err
 		}
@@ -298,7 +297,6 @@ func (r *WorkloadController) submitScanJob(ctx context.Context, owner client.Obj
 		WithCredentials(credentials).
 		WithPodPriorityClassName(scanJobPodPriorityClassName).
 		Get()
-
 	if err != nil {
 		if errors.Is(err, kube.ErrReplicaSetNotFound) || errors.Is(err, kube.ErrNoRunningPods) ||
 			errors.Is(err, kube.ErrUnSupportedKind) {
