@@ -2,25 +2,25 @@ module github.com/neticdk/scanning-controller
 
 go 1.24.2
 
-toolchain go1.24.4
+toolchain go1.25.1
 
 require (
 	github.com/CycloneDX/cyclonedx-go v0.9.2
-	github.com/aquasecurity/trivy v0.63.0
+	github.com/aquasecurity/trivy v0.66.0
 	github.com/aquasecurity/trivy-db 8a8d6e3cc002
-	github.com/aquasecurity/trivy-operator v0.27.1
+	github.com/aquasecurity/trivy-operator v0.28.0
 	github.com/bluele/gcache v0.0.2
 	github.com/bombsimon/logrusr/v4 v4.1.0
 	github.com/bxcodec/httpcache v1.0.0
 	github.com/openclarity/kubeclarity/shared v0.0.0-20241014145616-c30fbfa34aae
 	github.com/sirupsen/logrus v1.9.3
-	github.com/spf13/cobra v1.9.1
+	github.com/spf13/cobra v1.10.1
 	go.uber.org/multierr v1.11.0
 	gopkg.in/go-jose/go-jose.v4 v4.1.0
-	k8s.io/api v0.33.2
-	k8s.io/apimachinery v0.33.2
-	k8s.io/client-go v0.33.2
-	sigs.k8s.io/controller-runtime v0.21.0
+	k8s.io/api v0.34.1
+	k8s.io/apimachinery v0.34.1
+	k8s.io/client-go v0.34.1
+	sigs.k8s.io/controller-runtime v0.22.1
 )
 
 require (
