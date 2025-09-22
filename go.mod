@@ -16,7 +16,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.10.1
 	go.uber.org/multierr v1.11.0
-	gopkg.in/go-jose/go-jose.v4 v4.1.0
+	gopkg.in/go-jose/go-jose.v4 v4.1.2
 	k8s.io/api v0.34.1
 	k8s.io/apimachinery v0.34.1
 	k8s.io/client-go v0.34.1
